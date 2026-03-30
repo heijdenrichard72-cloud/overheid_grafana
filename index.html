@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ObsidiaNorth — European Monitoring Infrastructure</title>
+  <meta name="description"
+    content="Enterprise-grade Grafana & Zabbix monitoring, hosted exclusively on European infrastructure. Built for government and commercial organisations that demand data sovereignty." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --c-ink: #0D1117;
+      --c-ink-soft: #1C2333;
+      --c-ink-muted: #2E3A4E;
+      --c-surface: #F4F6F9;
+      --c-white: #FFFFFF;
+      --c-accent: #0F5FBE;
+      --c-accent-bright: #1A7FFF;
+      --c-accent-glow: rgba(15, 95, 190, 0.12);
+      --c-eu-gold: #D4A843;
+      --c-success: #1A7A4A;
+      --c-text: #1C2333;
+      --c-text-muted: #4A5568;
+      --c-text-light: #718096;
+      --c-border: rgba(0, 0, 0, 0.08);
+      --c-border-strong: rgba(0, 0, 0, 0.15);
+      --f-display: 'Syne', sans-serif;
+      --f-body: 'IBM Plex Sans', sans-serif;
+      --f-mono: 'IBM Plex Mono', monospace;
+      --radius: 6px;
+      --radius-lg: 12px;
+      --max: 1180px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--f-body);
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--c-text);
+      background: var(--c-white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--c-ink);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      color: var(--c-accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--c-text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--c-accent);
+    }
+
+    .nav-cta {
+      background: var(--c-accent);
+      color: var(--c-white) !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--c-accent-bright) !important;
+      color: var(--c-white) !important;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 5rem 2rem;
+    }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--c-accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--c-accent);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--f-display);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+    }
+
+    h2 {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      background: var(--c-ink);
+      color: var(--c-white);
+      padding: 7rem 2rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 40%, rgba(15, 95, 190, 0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 20% 70%, rgba(212, 168, 67, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(212, 168, 67, 0.15);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      color: var(--c-eu-gold);
+      font-family: var(--f-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge::before {
+      content: '★';
+      font-size: 0.65rem;
+    }
+
+    #hero h1 {
+      color: var(--c-white);
+      margin-bottom: 1.25rem;
+    }
+
+    #hero h1 em {
+      font-style: normal;
+      color: var(--c-accent-bright);
+    }
+
+    .hero-lead {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--c-accent);
+      color: var(--c-white);
+      padding: 0.8rem 1.75rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover {
+      background: var(--c-accent-bright);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0.8rem 1.75rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.9375rem;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255, 255, 255, 0.5);
+      color: var(--c-white);
+    }
+
+    /* Dashboard mock */
+    .hero-visual {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      font-family: var(--f-mono);
+    }
+
+    .dash-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .dash-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dash-title {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-left: auto;
+    }
+
+    .dash-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .dash-metric {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+    }
+
+    .dash-metric-label {
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 0.25rem;
+    }
+
+    .dash-metric-value {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--c-white);
+    }
+
+    .dash-metric-value.green {
+      color: #4ADE80;
+    }
+
+    .dash-metric-value.amber {
+      color: var(--c-eu-gold);
+    }
+
+    .dash-chart {
+      height: 80px;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .dash-bar {
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      opacity: 0.7;
+    }
+
+    /* ── TRUST BAR ── */
+    #trust {
+      padding: 2rem 2rem;
+      background: var(--c-surface);
+      border-top: 1px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .trust-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .trust-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--c-text-light);
+      white-space: nowrap;
+    }
+
+    .trust-items {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .trust-item {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--c-text-muted);
+      letter-spacing: -0.02em;
+      opacity: 0.5;
+    }
+
+    /* ── WHY EUROPE ── */
+    #why {
+      background: var(--c-white);
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+
+    .why-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .why-item {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .why-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: var(--radius);
+      background: var(--c-accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-accent);
+      font-size: 1rem;
+    }
+
+    .why-item h4 {
+      font-family: var(--f-display);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      color: var(--c-ink);
+    }
+
+    .why-item p {
+      font-size: 0.875rem;
+      color: var(--c-text-muted);
+    }
+
+    .why-card {
+      background: var(--c-ink);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      color: var(--c-white);
+    }
+
+    .why-card-label {
+      font-family: var(--f-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-eu-gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .compliance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .compliance-item {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+
+    .compliance-item h5 {
+      font-family: var(--f-display);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--c-white);
+      margin-bottom: 0.25rem;
+    }
+
+    .compliance-item p {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .check {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(26, 122, 74, 0.2);
+      color: #4ADE80;
+      font-size: 0.65rem;
+      text-align: center;
+      line-height: 16px;
+      margin-right: 0.4rem;
+    }
+
+    /* ── SOLUTIONS ── */
+    #solutions {
+      background: var(--c-surface);
+    }
+
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .solution-card {
+      background: var(--c-white);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .solution-card:hover {
+      border-color: rgba(15, 95, 190, 0.3);
+      box-shadow: 0 4px 20px rgba(15, 95, 190, 0.08);
+    }
+
+    .solution-card.featured {
+      border-color: var(--c-accent);
+      position: relative;
+    }
+
+    .solution-card.featured::before {
+      content: 'Meest gekozen';
+      position: absolute;
+      top: -12px;
+      left: 1.5rem;
+      background: var(--c-accent);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+    }
+
+    .solution-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      background: var(--c-accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      font-size: 1.25rem;
+    }
+
+    .solution-card h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .solution-card p {
+      font-size: 0.875rem;
+      color: var(--c-text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .solution-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .solution-features li {
+      font-size: 0.8125rem;
+      color: var(--c-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .solution-features li::before {
+      content: '→';
+      color: var(--c-accent);
+      font-size: 0.75rem;
+    }
+
+    /* ── HOW IT WORKS ── */
+    #how {
+      background: var(--c-white);
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .how-steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--c-border-strong), transparent);
+    }
+
+    .how-step {
+      text-align: center;
+    }
+
+    .how-step-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--c-ink);
+      color: var(--c-white);
+      font-family: var(--f-display);
+      font-size: 1.125rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .how-step h4 {
+      font-family: var(--f-display);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .how-step p {
+      font-size: 0.8125rem;
+      color: var(--c-text-muted);
+    }
+
+    /* ── PRICING ── */
+    #pricing {
+      background: var(--c-surface);
+    }
+
+    .pricing-note {
+      font-size: 0.875rem;
+      color: var(--c-text-muted);
+      margin-top: 0.75rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .pricing-card {
+      background: var(--c-white);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+
+    .pricing-card.featured {
+      background: var(--c-ink);
+      border-color: var(--c-ink);
+      color: var(--c-white);
+    }
+
+    .pricing-tier {
+      font-family: var(--f-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c-text-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .pricing-card.featured .pricing-tier {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .pricing-price {
+      font-family: var(--f-display);
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.25rem;
+    }
+
+    .pricing-period {
+      font-size: 0.75rem;
+      color: var(--c-text-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-card.featured .pricing-period {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .pricing-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-list li {
+      font-size: 0.875rem;
+      color: var(--c-text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .pricing-card.featured .pricing-list li {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .pricing-list li::before {
+      content: '✓';
+      color: var(--c-success);
+      font-weight: 600;
+    }
+
+    .pricing-card.featured .pricing-list li::before {
+      color: #4ADE80;
+    }
+
+    .btn-outline {
+      display: block;
+      text-align: center;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--c-border-strong);
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: var(--c-text);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--c-accent);
+      color: var(--c-accent);
+    }
+
+    .btn-solid {
+      display: block;
+      text-align: center;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      background: var(--c-accent);
+      color: var(--c-white);
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-solid:hover {
+      background: var(--c-accent-bright);
+    }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials {
+      background: var(--c-white);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .testimonial {
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+    }
+
+    .testimonial-quote {
+      font-size: 0.9375rem;
+      color: var(--c-text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .testimonial-quote::before {
+      content: '"';
+      color: var(--c-accent);
+      font-size: 1.5rem;
+      line-height: 0;
+      vertical-align: -0.25em;
+      margin-right: 0.2rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--c-ink);
+      color: var(--c-white);
+      font-family: var(--f-display);
+      font-size: 0.875rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .author-name {
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .author-role {
+      font-size: 0.75rem;
+      color: var(--c-text-light);
+    }
+
+    /* ── ABOUT / FOUNDERS ── */
+    #about {
+      background: var(--c-surface);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+
+    .founders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .founder-card {
+      background: var(--c-white);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+    }
+
+    .founder-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius);
+      background: var(--c-ink);
+      color: var(--c-white);
+      font-family: var(--f-display);
+      font-size: 1.125rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .founder-card h4 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: 0.15rem;
+    }
+
+    .founder-card span {
+      font-size: 0.75rem;
+      color: var(--c-text-light);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .founder-card p {
+      font-size: 0.8125rem;
+      color: var(--c-text-muted);
+    }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .stat-item {
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .stat-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .stat-number {
+      font-family: var(--f-display);
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--c-accent);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--c-text-muted);
+    }
+
+    /* ── CONTACT / CTA ── */
+    #contact {
+      background: var(--c-ink);
+      color: var(--c-white);
+      text-align: center;
+    }
+
+    #contact h2 {
+      color: var(--c-white);
+      margin-bottom: 1rem;
+    }
+
+    #contact p {
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .contact-form {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      padding: 0.65rem 0.875rem;
+      font-family: var(--f-body);
+      font-size: 0.875rem;
+      color: var(--c-white);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--c-accent-bright);
+    }
+
+    .form-group select option {
+      background: var(--c-ink);
+      color: var(--c-white);
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 0.875rem;
+      border-radius: var(--radius);
+      background: var(--c-accent);
+      color: var(--c-white);
+      font-family: var(--f-body);
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .form-submit:hover {
+      background: var(--c-accent-bright);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--c-ink-soft);
+      color: rgba(255, 255, 255, 0.5);
+      padding: 3rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .footer-brand .logo {
+      display: block;
+      color: var(--c-white);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      max-width: 240px;
+    }
+
+    .footer-col h5 {
+      font-family: var(--f-display);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+
+    .footer-col ul li a {
+      font-size: 0.8125rem;
+      color: rgba(255, 255, 255, 0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .footer-bottom {
+      max-width: var(--max);
+      margin: 2rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+
+    .eu-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--c-eu-gold);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+
+      .hero-grid,
+      .why-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .solutions-grid,
+      .pricing-grid,
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .how-steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .how-steps::before {
+        display: none;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 3.5rem 1.25rem;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .how-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .founders-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .compliance-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">Obsidian<span>North</span></a>
+      <ul class="nav-links">
+        <li><a href="#solutions">Oplossingen</a></li>
+        <li><a href="#why">Waarom Europa</a></li>
+        <li><a href="#how">Hoe het werkt</a></li>
+        <li><a href="#pricing">Tarieven</a></li>
+        <li><a href="#about">Over ons</a></li>
+        <li><a href="#contact" class="nav-cta">Demo aanvragen</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section id="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-badge">100% Europese infrastructuur</div>
+        <h1>Monitoring zonder<br><em>compromissen</em></h1>
+        <p class="hero-lead">
+          Enterprise Grafana &amp; Zabbix monitoring als managed service. Uitsluitend gehost op Europese infrastructuur,
+          volledig AVG-compliant en klaar voor overheidsorganisaties.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">Demo aanvragen</a>
+          <a href="#solutions" class="btn-ghost">Bekijk oplossingen</a>
+        </div>
+      </div>
+
+      <!-- Live dashboard mockup -->
+      <div class="hero-visual">
+        <div class="dash-header">
+          <div class="dash-dot" style="background:#FF5F57;"></div>
+          <div class="dash-dot" style="background:#FEBC2E;"></div>
+          <div class="dash-dot" style="background:#28C840;"></div>
+          <span class="dash-title">ObsidiaNorth — Productie omgeving</span>
+        </div>
+        <div class="dash-metrics">
+          <div class="dash-metric">
+            <div class="dash-metric-label">Uptime</div>
+            <div class="dash-metric-value green">99.97%</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">Hosts actief</div>
+            <div class="dash-metric-value">1.284</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-label">Meldingen</div>
+            <div class="dash-metric-value amber">3</div>
+          </div>
+        </div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;">CPU gebruik — afgelopen 24u
+        </div>
+        <div class="dash-chart">
+          <div class="dash-bar" style="height:30%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:45%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:38%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:52%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:48%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:61%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:55%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:70%;background:var(--c-eu-gold);"></div>
+          <div class="dash-bar" style="height:63%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:40%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:35%;background:#1A7FFF;"></div>
+          <div class="dash-bar" style="height:42%;background:#1A7FFF;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TRUST BAR ══ -->
+  <div id="trust">
+    <div class="trust-inner">
+      <span class="trust-label">Vertrouwd door organisaties zoals</span>
+      <div class="trust-items">
+        <!-- Vervang door echte logo's of klantnamen -->
+        <span class="trust-item">Gemeente Rotterdam</span>
+        <span class="trust-item">FinancePro NL</span>
+        <span class="trust-item">ZorgGroep Noord</span>
+        <span class="trust-item">Provincie Flevoland</span>
+        <span class="trust-item">LogiTech Europe</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ WHY EUROPE ══ -->
+  <section id="why">
+    <div class="container">
+      <span class="section-label">Datasoevereiniteit</span>
+      <h2>Uw data blijft<br>op Europese bodem</h2>
+
+      <div class="why-grid">
+        <ul class="why-list">
+          <li class="why-item">
+            <div class="why-icon">🇪🇺</div>
+            <div>
+              <h4>Uitsluitend Europese datacenters</h4>
+              <p>Wij werken alleen met ICT-providers die gevestigd zijn binnen de EU. Uw monitoring-data verlaat Europa
+                nooit.</p>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-icon">🔒</div>
+            <div>
+              <h4>AVG/GDPR by design</h4>
+              <p>Onze architectuur is van de grond af ontworpen rondom Europese privacywetgeving. Geen juridische grijze
+                zones.</p>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-icon">🏛️</div>
+            <div>
+              <h4>Geschikt voor overheidsorganisaties</h4>
+              <p>Wij voldoen aan de eisen van gemeenten, provincies, waterschappen en rijksdiensten, inclusief
+                BIO-aansluiting.</p>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-icon">📋</div>
+            <div>
+              <h4>Transparante verwerkersovereenkomst</h4>
+              <p>Een heldere DPA die aansluit op wat Nederlandse en EU-aanbestedingen vereisen. Geen verrassingen in de
+                kleine lettertjes.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="why-card">
+          <div class="why-card-label">Compliance overzicht</div>
+          <div class="compliance-grid">
+            <div class="compliance-item">
+              <h5><span class="check">✓</span>AVG / GDPR</h5>
+              <p>Volledig compliant, verwerkersovereenkomst beschikbaar</p>
+            </div>
+            <div class="compliance-item">
+              <h5><span class="check">✓</span>BIO</h5>
+              <p>Baseline Informatiebeveiliging Overheid aansluiting</p>
+            </div>
+            <div class="compliance-item">
+              <h5><span class="check">✓</span>ISO 27001</h5>
+              <p>Informatiebeveiliging gecertificeerd (in voorbereiding)</p>
+            </div>
+            <div class="compliance-item">
+              <h5><span class="check">✓</span>NIS2</h5>
+              <p>Gereed voor de Europese cybersecurity richtlijn</p>
+            </div>
+            <div class="compliance-item">
+              <h5><span class="check">✓</span>EU AI Act</h5>
+              <p>Geen gebruik van externe AI-verwerking buiten EU</p>
+            </div>
+            <div class="compliance-item">
+              <h5><span class="check">✓</span>Schrems II</h5>
+              <p>Geen doorgifte aan derde landen</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SOLUTIONS ══ -->
+  <section id="solutions">
+    <div class="container">
+      <span class="section-label">Oplossingen</span>
+      <h2>Voor iedere organisatie</h2>
+      <p style="color:var(--c-text-muted);margin-top:0.75rem;max-width:520px;">Van kleine gemeenten tot grote financiële
+        instellingen: wij leveren monitoring op maat, zonder vendor lock-in.</p>
+
+      <div class="solutions-grid">
+        <div class="solution-card">
+          <div class="solution-icon">📡</div>
+          <h3>Zabbix Monitoring</h3>
+          <p>Betrouwbare infrastructuurmonitoring voor servers, netwerk en applicaties. Bewezen in overheidsomgevingen.
+          </p>
+          <ul class="solution-features">
+            <li>Automatische host discovery</li>
+            <li>SNMP, IPMI, JMX ondersteuning</li>
+            <li>Aanpasbare drempelwaarden en escalaties</li>
+            <li>Integratie met uw ticketsysteem</li>
+            <li>On-boarding binnen 5 werkdagen</li>
+          </ul>
+        </div>
+
+        <div class="solution-card featured">
+          <div class="solution-icon">📊</div>
+          <h3>Grafana Dashboards</h3>
+          <p>Visualiseer al uw operationele data in realtime. Koppel bestaande databronnen of begin met onze templates.
+          </p>
+          <ul class="solution-features">
+            <li>Onbeperkte dashboards en panelen</li>
+            <li>Koppeling met Prometheus, InfluxDB, PostgreSQL</li>
+            <li>Role-based access per afdeling</li>
+            <li>Alerting via e-mail, Teams, PagerDuty</li>
+            <li>Maandelijkse rapportages op maat</li>
+          </ul>
+        </div>
+
+        <div class="solution-card">
+          <div class="solution-icon">🔗</div>
+          <h3>Gecombineerde stack</h3>
+          <p>Grafana en Zabbix als geïntegreerde oplossing. De krachtigste combinatie voor volledige observability.</p>
+          <ul class="solution-features">
+            <li>Unified monitoring en visualisatie</li>
+            <li>End-to-end observability</li>
+            <li>Gecentraliseerd alertmanagement</li>
+            <li>Dedicated customer success manager</li>
+            <li>SLA tot 99.9% uptime guarantee</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HOW IT WORKS ══ -->
+  <section id="how">
+    <div class="container">
+      <span class="section-label">Werkwijze</span>
+      <h2>Operationeel in dagen,<br>niet in maanden</h2>
+
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-step-num">01</div>
+          <h4>Intake gesprek</h4>
+          <p>Wij brengen uw IT-landschap in kaart en bepalen samen de scope en prioriteiten.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">02</div>
+          <h4>Configuratie</h4>
+          <p>Onze engineers richten de monitoring in op basis van uw specificaties en bestaande infrastructuur.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">03</div>
+          <h4>Overdracht &amp; training</h4>
+          <p>We geven een hands-on training aan uw beheerteam en leveren volledige documentatie op.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-num">04</div>
+          <h4>Doorlopend beheer</h4>
+          <p>Wij monitoren proactief, leveren maandrapportages en schalen mee met uw organisatie.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PRICING ══ -->
+  <section id="pricing">
+    <div class="container">
+      <span class="section-label">Tarieven</span>
+      <h2>Transparante prijzen,<br>geen verborgen kosten</h2>
+      <p class="pricing-note">Alle prijzen zijn exclusief BTW. Maatwerk voor overheidsaanbestedingen beschikbaar.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-tier">Starter</div>
+          <div class="pricing-price">€ 299</div>
+          <div class="pricing-period">per maand / tot 50 hosts</div>
+          <ul class="pricing-list">
+            <li>Zabbix of Grafana (keuze)</li>
+            <li>Tot 50 gemonitorde hosts</li>
+            <li>E-mail alerting</li>
+            <li>Standaard dashboards</li>
+            <li>Support via ticket (werkdagen)</li>
+            <li>Maandelijkse rapportage</li>
+          </ul>
+          <a href="#contact" class="btn-outline">Starten</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="pricing-tier">Professioneel</div>
+          <div class="pricing-price" style="color:white;">€ 749</div>
+          <div class="pricing-period">per maand / tot 250 hosts</div>
+          <ul class="pricing-list">
+            <li>Grafana + Zabbix gecombineerd</li>
+            <li>Tot 250 gemonitorde hosts</li>
+            <li>Multi-channel alerting (Teams, Slack)</li>
+            <li>Maatwerk dashboards</li>
+            <li>Dedicated account manager</li>
+            <li>SLA 99.5% uptime</li>
+            <li>Verwerkersovereenkomst inbegrepen</li>
+          </ul>
+          <a href="#contact" class="btn-solid">Meest gekozen</a>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-tier">Enterprise / Overheid</div>
+          <div class="pricing-price">Op maat</div>
+          <div class="pricing-period">tarieven op aanvraag</div>
+          <ul class="pricing-list">
+            <li>Onbeperkte hosts</li>
+            <li>Volledige BIO/NIS2 compliance</li>
+            <li>Aanbestedingsondersteuning</li>
+            <li>On-premise of private cloud optie</li>
+            <li>24/7 support SLA</li>
+            <li>Uitgebreide DPA en verwerkersregister</li>
+            <li>Jaarlijkse penetratietest rapport</li>
+          </ul>
+          <a href="#contact" class="btn-outline">Contact opnemen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIALS ══ -->
+  <section id="testimonials">
+    <div class="container">
+      <span class="section-label">Klanten aan het woord</span>
+      <h2>Wat onze klanten zeggen</h2>
+      <!-- Vervang door echte testimonials zodra beschikbaar -->
+      <div class="testimonials-grid">
+        <div class="testimonial">
+          <p class="testimonial-quote">Eindelijk een monitoringpartner die begrijpt wat de overheid nodig heeft. De
+            AVG-documentatie was kant-en-klaar, dat scheelde ons weken aan juridisch werk.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">JV</div>
+            <div>
+              <div class="author-name">Jan Vermeer</div>
+              <div class="author-role">CISO, Gemeente Rotterdam</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">De Grafana dashboards geven ons eindelijk het volledige beeld van onze
+            IT-omgeving. Onboarding duurde drie dagen, dat had ik niet verwacht.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SR</div>
+            <div>
+              <div class="author-name">Sophie Riedel</div>
+              <div class="author-role">IT Manager, FinancePro NL</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">Als zorginstelling zijn wij extra kritisch op dataverwerking. ObsidiaNorth levert
+            wat zij beloven: alle data blijft in Europa, punt.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MK</div>
+            <div>
+              <div class="author-name">Marc Klaasen</div>
+              <div class="author-role">Hoofd ICT, ZorgGroep Noord</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ABOUT / FOUNDERS ══ -->
+  <section id="about">
+    <div class="container">
+      <span class="section-label">Over ObsidiaNorth</span>
+      <h2>Gebouwd door mensen<br>die monitoring kennen</h2>
+
+      <div class="about-grid">
+        <div>
+          <p style="color:var(--c-text-muted);margin-bottom:1.5rem;">
+            ObsidiaNorth is opgericht door een groep ervaren ICT-professionals die zagen hoe organisaties worstelden met
+            monitoring die niet voldeed aan Europese privacy-eisen of die te complex was om zelf te beheren.
+          </p>
+          <p style="color:var(--c-text-muted);margin-bottom:2rem;">
+            Wij geloven dat betrouwbare monitoring geen luxe is. Het is de basis van een stabiele IT-organisatie. Daarom
+            bieden wij Grafana en Zabbix aan als volledig beheerde dienst, uitsluitend op Europese infrastructuur.
+          </p>
+
+          <h3 style="margin-bottom:1rem;">Het team</h3>
+          <div class="founders-grid">
+            <!-- Voeg echte oprichters toe -->
+            <div class="founder-card">
+              <div class="founder-avatar">RD</div>
+              <h4>Richard de Vries</h4>
+              <span>Co-founder / CTO</span>
+              <p>15 jaar ervaring in enterprise monitoring en infrastructuur.</p>
+            </div>
+            <div class="founder-card">
+              <div class="founder-avatar">AH</div>
+              <h4>Anke Hoekstra</h4>
+              <span>Co-founder / CEO</span>
+              <p>Achtergrond in overheidsaanbestedingen en digitale transformatie.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-stats">
+          <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Europese dataopslag en verwerking, zonder uitzonderingen</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">99.97%</div>
+            <div class="stat-label">Gemiddelde platform uptime over de afgelopen 12 maanden</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">&lt; 5 dgn</div>
+            <div class="stat-label">Gemiddelde time-to-operational na contracttekening</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Data breaches of AVG-meldplichtige incidenten</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ══ -->
+  <section id="contact">
+    <div class="container">
+      <span class="section-label" style="color:rgba(255,255,255,0.4);justify-content:center;">Contact</span>
+      <h2>Klaar om te starten?</h2>
+      <p>Plan een vrijblijvende demo van 30 minuten. Wij laten u zien hoe ObsidiaNorth eruitziet voor uw specifieke
+        omgeving.</p>
+
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Voornaam</label>
+            <input type="text" placeholder="Jan" />
+          </div>
+          <div class="form-group">
+            <label>Achternaam</label>
+            <input type="text" placeholder="Vermeer" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Zakelijk e-mailadres</label>
+          <input type="email" placeholder="j.vermeer@organisatie.nl" />
+        </div>
+        <div class="form-group">
+          <label>Organisatie</label>
+          <input type="text" placeholder="Gemeente Rotterdam" />
+        </div>
+        <div class="form-group">
+          <label>Type organisatie</label>
+          <select>
+            <option value="">Selecteer...</option>
+            <option>Gemeente / Provincie / Waterschap</option>
+            <option>Rijksoverheid</option>
+            <option>Onderwijs / Onderzoek</option>
+            <option>Zorg</option>
+            <option>Financiële sector</option>
+            <option>Commercieel (overig)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Geschat aantal te monitoren hosts</label>
+          <select>
+            <option>Tot 50</option>
+            <option>50 – 250</option>
+            <option>250 – 1.000</option>
+            <option>Meer dan 1.000</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Toelichting (optioneel)</label>
+          <textarea placeholder="Vertel ons kort over uw situatie en eventuele specifieke wensen..."></textarea>
+        </div>
+        <button class="form-submit">Demo aanvragen →</button>
+        <p style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:1rem;text-align:center;">Uw gegevens worden
+          uitsluitend verwerkt conform onze privacyverklaring. Geen spam.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo">Obsidian<span>North</span></a>
+        <p>Enterprise Grafana &amp; Zabbix monitoring, uitsluitend op Europese infrastructuur.</p>
+        <br>
+        <span class="eu-badge">★ 100% EU-hosted</span>
+      </div>
+      <div class="footer-col">
+        <h5>Oplossingen</h5>
+        <ul>
+          <li><a href="#">Grafana Dashboards</a></li>
+          <li><a href="#">Zabbix Monitoring</a></li>
+          <li><a href="#">Gecombineerde Stack</a></li>
+          <li><a href="#">Overheidsoplossingen</a></li>
+          <li><a href="#">Enterprise</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Bedrijf</h5>
+        <ul>
+          <li><a href="#">Over ons</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Vacatures</a></li>
+          <li><a href="#">Partners</a></li>
+          <li><a href="#">Nieuws</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Juridisch</h5>
+        <ul>
+          <li><a href="#">Privacyverklaring</a></li>
+          <li><a href="#">Verwerkersovereenkomst</a></li>
+          <li><a href="#">Algemene voorwaarden</a></li>
+          <li><a href="#">Security beleid</a></li>
+          <li><a href="#">Cookie instellingen</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 ObsidiaNorth B.V. — KvK: 00000000 — Emmeloord, Nederland</span>
+      <span class="eu-badge">Alle data verwerkt en opgeslagen in de Europese Unie</span>
+    </div>
+  </footer>
+
+</body>
+
+</html>
